@@ -7,6 +7,14 @@ board = [' '] * 9
 current_player = 'X'
 
 
+def validate_move(func):
+    def wrapper(cell):
+        if board[cell] != ' ':
+            return redirect(url_for('index'))
+        return func(cell)
+    return wrapper
+
+
 def check_winner():
     # Winning combinations
     win_combinations = [
@@ -32,6 +40,7 @@ def index():
 
 
 @app.route('/play/<int:cell>')
+@validate_move
 def play(cell):
     # breakpoint()
     global current_player
