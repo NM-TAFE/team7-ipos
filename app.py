@@ -25,6 +25,17 @@ def check_draw():
 
 
 def count_empty_spots():
+    """
+    Count how many empty spaces are left on the Tic Tac Toe board.
+
+    The board is stored as a list of 9 slots.
+    An empty slot = ' '
+
+    This function uses a simple linear search.
+    It checks each slot one by one and counts the slots that are empty.
+
+    Returns: (int) The number of empty spaces left on the board.
+    """
     empty_count = 0
     for cell in board:
         if cell == ' ':
@@ -37,7 +48,7 @@ def index():
     winner = check_winner()
     draw = check_draw()
 
-    # Count how many empty spaces are left on the board
+    # Get the number of empty slots so it can be shown as "moves left" on the game page.
     empty_spots = count_empty_spots()
 
     return render_template('index.html',
