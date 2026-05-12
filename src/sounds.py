@@ -3,6 +3,11 @@ import pyaudio
 
 # Code derived from: https://www.py4u.org/blog/python-realtime-audio-streaming-with-pyaudio-or-something-else/
 def play_sound(current_player):
+    """
+    Use this to have the program play a simple sound.
+    :param current_player: changes which pitch is played if != 'X'
+    :return: generates a sound
+    """
     # Audio parametres
     sample_rate = 44100 # Hz
     tone_duration = 0.456 # Seconds
