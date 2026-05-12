@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from src.sounds import play_sound
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ def play(cell):
     global current_player
     if board[cell] == ' ':
         board[cell] = current_player
+        play_sound(current_player)
         if not check_winner():
             current_player = 'O' if current_player == 'X' else 'X'
     return redirect(url_for('index'))
