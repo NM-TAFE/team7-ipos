@@ -24,11 +24,28 @@ def check_draw():
     return ' ' not in board
 
 
+def count_empty_spots():
+    empty_count = 0
+    for cell in board:
+        if cell == ' ':
+            empty_count = empty_count + 1
+    return empty_count
+
+
 @app.route('/')
 def index():
     winner = check_winner()
     draw = check_draw()
-    return render_template('index.html', board=board, current_player=current_player, winner=winner, draw=draw)
+
+    # Count how many empty spaces are left on the board
+    empty_spots = count_empty_spots()
+
+    return render_template('index.html',
+                           board=board,
+                           current_player=current_player,
+                           winner=winner,
+                           draw=draw,
+                           empty_spots=empty_spots)
 
 
 @app.route('/play/<int:cell>')
