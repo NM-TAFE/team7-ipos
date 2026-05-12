@@ -9,6 +9,26 @@ body {
 
 .container {
   text-align: center;
+
+}
+
+.scoreboard{
+  text-align: left;
+}
+
+.x-wins{
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.o-wins{
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.draws{
+  font-size: 1.2em;
+  margin-bottom: 20px;
 }
 
 .board {

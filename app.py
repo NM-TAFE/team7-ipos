@@ -5,6 +5,9 @@ app = Flask(__name__)
 # Initialise game board and current player
 board = [' '] * 9
 current_player = 'X'
+x_wins = 0
+o_wins = 0
+draws = 0
 
 
 def check_winner():
@@ -28,7 +31,7 @@ def check_draw():
 def index():
     winner = check_winner()
     draw = check_draw()
-    return render_template('index.html', board=board, current_player=current_player, winner=winner, draw=draw)
+    return render_template('index.html', board=board, current_player=current_player, winner=winner, draws=draws, x_wins=x_wins, o_wins=o_wins)
 
 
 @app.route('/play/<int:cell>')
@@ -38,7 +41,17 @@ def play(cell):
     if board[cell] == ' ':
         board[cell] = current_player
         if not check_winner():
+            if check_draw():
+                global draws
+                draws = draws + 1
             current_player = 'O' if current_player == 'X' else 'X'
+        else:
+            if current_player == "X":
+                global x_wins
+                x_wins = x_wins + 1
+            else:
+                global o_wins
+                o_wins = o_wins + 1
     return redirect(url_for('index'))
 
 
