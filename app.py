@@ -38,7 +38,7 @@ def index():
 def play(cell):
     # breakpoint()
     global current_player
-    if board[cell] == ' ':
+    if board[cell] == ' ' and not check_winner():
         board[cell] = current_player
         if not check_winner():
             if check_draw():
