@@ -1,17 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for
+from game_service import check_winner, check_draw
 from src.sounds import play_sound
+import functools
 
 app = Flask(__name__)
 
 # Initialise game board and current player
 board = [' '] * 9
 current_player = 'X'
+x_wins = 0
+o_wins = 0
+draws = 0
 
 # Player symbol
 player_symbol = 'X'
 
 
 def validate_move(func):
+    @functools.wraps(func)
     def wrapper(cell):
         if board[cell] != ' ':
             return redirect(url_for('index'))
@@ -19,36 +25,19 @@ def validate_move(func):
     return wrapper
 
 
-def check_winner():
-    # Winning combinations
-    win_combinations = [
-        (0, 1, 2), (3, 4, 5), (6, 7, 8),  # Horizontal
-        (0, 3, 6), (1, 4, 7), (2, 5, 8),  # Vertical
-        (0, 4, 8), (2, 4, 6)  # Diagonal
-    ]
-
-    for combination in win_combinations:
-        if board[combination[0]] == board[combination[1]] == board[combination[2]] != ' ':
-            return board[combination[0]]
-
-    return None
-
-
-def check_draw():
-    return ' ' not in board
-
-
 @app.route('/')
 def index():
-    winner = check_winner()
-    draw = check_draw()
+    winner = check_winner(board)
+    draw = check_draw(board)
 
     return render_template(
         'index.html',
         board=board,
         current_player=current_player,
         winner=winner,
-        draw=draw,
+        draws=draws,
+        x_wins=x_wins,
+        o_wins=o_wins,
         player_symbol=player_symbol
     )
 
@@ -70,15 +59,21 @@ def set_symbol():
 @validate_move
 def play(cell):
     global current_player
-
-    if board[cell] == ' ':
+    if board[cell] == ' ' and not check_winner(board):
         board[cell] = current_player
-feature/player-choose-symbol
-play_sound(current_player)
-  
-        if not check_winner():
+        play_sound(current_player)
+        if not check_winner(board):
+            if check_draw(board):
+                global draws
+                draws = draws + 1
             current_player = 'O' if current_player == 'X' else 'X'
-
+        else:
+            if current_player == "X":
+                global x_wins
+                x_wins = x_wins + 1
+            else:
+                global o_wins
+                o_wins = o_wins + 1
     return redirect(url_for('index'))
 
 
