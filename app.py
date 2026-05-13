@@ -17,6 +17,7 @@ player_symbol = 'X'
 
 
 def validate_move(func):
+    @functools.wraps(func)
     def wrapper(cell):
         if board[cell] != ' ':
             return redirect(url_for('index'))
