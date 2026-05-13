@@ -4,30 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic Tac Toe</title>
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
+
   <body>
+
+    <div class="Scoreboard">
+        <h2>Scoreboard</h2>
+        <div class="x-wins">X Wins: {{ x_wins }}</div>
+        <div class="o-wins">O Wins: {{ o_wins }}</div>
+        <div class="draws">Draws: {{ draws }}</div>
+    </div>
     <div class="container">
       <h1>Tic Tac Toe</h1>
+
+      <!-- Symbol Selection -->
+      <form method="POST" action="{{ url_for('set_symbol') }}">
+        <h3>Choose Your Symbol</h3>
+
+        <button type="submit" name="symbol" value="X">
+          Play as X
+        </button>
+
+        <button type="submit" name="symbol" value="O">
+          Play as O
+        </button>
+      </form>
+
+      <p class="selected-symbol">
+        You selected: {{ player_symbol }}
+      </p>
+
+      <!-- Game Board -->
       <div class="board">
         {% for index in range(9) %}
-        <a href="{{ url_for('play', cell=index) }}" class="cell"
-          >{{ board[index] }}</a
-        >
+        <a href="{{ url_for('play', cell=index) }}" class="cell">
+          {{ board[index] }}
+        </a>
         {% endfor %}
       </div>
+
+      <!-- Game Result -->
       {% if winner %}
       <p class="result">Player {{ winner }} wins!</p>
+
       {% elif draw %}
       <p class="result">It's a draw!</p>
+
       {% else %}
-      <p class="current-player">Current Player: {{ current_player }}</p>
+      <p class="current-player">
+        Current Player: {{ current_player }}
+      </p>
       <p>Moves left: {{ empty_spots }}</p>
       {% endif %}
-      <a href="{{ url_for('reset') }}" class="reset-button">Reset Game</a>
+
+      <!-- Reset Button -->
+      <a href="{{ url_for('reset') }}" class="reset-button">
+        Reset Game
+      </a>
     </div>
   </body>
 </html>
