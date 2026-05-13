@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from game_service import check_winner, check_draw
 from src.sounds import play_sound
+import functools
 
 app = Flask(__name__)
 
