@@ -11,6 +11,14 @@ current_player = 'X'
 player_symbol = 'X'
 
 
+def validate_move(func):
+    def wrapper(cell):
+        if board[cell] != ' ':
+            return redirect(url_for('index'))
+        return func(cell)
+    return wrapper
+
+
 def check_winner():
     # Winning combinations
     win_combinations = [
@@ -59,6 +67,7 @@ def set_symbol():
 
 
 @app.route('/play/<int:cell>')
+@validate_move
 def play(cell):
     global current_player
 
